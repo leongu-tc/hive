@@ -1218,6 +1218,10 @@ public class Commands {
     @Override public void run() {
       while (hiveStatement.hasMoreLogs()) {
         try {
+          if (hiveStatement.isClosed())
+          {
+              return;
+          }
           updateQueryLog();
           Thread.sleep(queryProgressInterval);
         } catch (SQLException e) {

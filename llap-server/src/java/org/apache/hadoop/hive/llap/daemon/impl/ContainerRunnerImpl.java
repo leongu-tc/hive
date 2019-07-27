@@ -124,7 +124,7 @@ public class ContainerRunnerImpl extends CompositeService implements ContainerRu
     this.localAddress = localAddress;
     this.localShufflePort = localShufflePort;
     this.amReporter = amReporter;
-    this.signer = UserGroupInformation.isSecurityEnabled()
+    this.signer = (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP))
         ? new LlapSignerImpl(conf, daemonId.getClusterString()) : null;
     this.fsUgiFactory = fsUgiFactory;
     this.socketFactory = socketFactory;

@@ -61,7 +61,7 @@
   </modules>
 
   <properties>
-    <hive.version.shortname>2.1.0</hive.version.shortname>
+    <hive.version.shortname>2.2.0</hive.version.shortname>
 
     <!-- Build Properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -121,7 +121,7 @@
     <datanucleus-rdbms.version>4.1.7</datanucleus-rdbms.version>
     <datanucleus-jdo.version>3.2.0-m3</datanucleus-jdo.version>
     <commons-cli.version>1.2</commons-cli.version>
-    <commons-codec.version>1.4</commons-codec.version>
+    <commons-codec.version>1.10</commons-codec.version>
     <commons-collections.version>3.2.2</commons-collections.version>
     <commons-compress.version>1.9</commons-compress.version>
     <commons-exec.version>1.1</commons-exec.version>
@@ -138,9 +138,9 @@
     <guava.version>14.0.1</guava.version>
     <groovy.version>2.4.4</groovy.version>
     <h2database.version>1.3.166</h2database.version>
-    <hadoop.version>2.8.0</hadoop.version>
+    <hadoop.version>2.7.2-SDP</hadoop.version>
     <hadoop.bin.path>${basedir}/${hive.path.to.root}/testutils/hadoop</hadoop.bin.path>
-    <hbase.version>1.1.1</hbase.version>
+    <hbase.version>1.2.1-SDP</hbase.version>
     <!-- required for logging test to avoid including hbase which pulls disruptor transitively -->
     <disruptor.version>3.3.0</disruptor.version>
     <hikaricp.version>2.5.1</hikaricp.version>
@@ -1049,6 +1049,10 @@
               <rules>
                 <requireReleaseDeps>
                   <message>Release builds are not allowed to have SNAPSHOT depenendencies</message>
+                  <excludes>
+                    <exclude>com.cgws.sdp.auth:*</exclude>
+                    <exclude>com.cgws.sdp:*</exclude>
+                  </excludes>
                   <searchTransitive>true</searchTransitive>
                   <onlyWhenRelease>true</onlyWhenRelease>
                 </requireReleaseDeps>

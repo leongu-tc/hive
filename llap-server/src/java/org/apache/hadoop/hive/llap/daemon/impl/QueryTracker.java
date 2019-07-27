@@ -162,7 +162,7 @@ public class QueryTracker extends AbstractService {
       boolean isExistingQueryInfo = true;
       QueryInfo queryInfo = queryInfoMap.get(queryIdentifier);
       if (queryInfo == null) {
-        if (UserGroupInformation.isSecurityEnabled()) {
+        if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
           Preconditions.checkNotNull(tokenInfo.userName);
         }
         queryInfo =

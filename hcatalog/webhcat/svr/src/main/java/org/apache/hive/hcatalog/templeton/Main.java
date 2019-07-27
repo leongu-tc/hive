@@ -165,7 +165,7 @@ public class Main {
     throws Exception {
 
     //Authenticate using keytab
-    if (UserGroupInformation.isSecurityEnabled()) {
+    if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
       UserGroupInformation.loginUserFromKeytab(conf.kerberosPrincipal(),
         conf.kerberosKeytab());
     }
@@ -207,8 +207,8 @@ public class Main {
              FilterMapping.REQUEST);
     root.addFilter(fHolder, "/" + SERVLET_PATH + "/v1/mapreduce/*", 
              FilterMapping.REQUEST);
-    root.addFilter(fHolder, "/" + SERVLET_PATH + "/v1/status/*", 
-             FilterMapping.REQUEST);
+    //root.addFilter(fHolder, "/" + SERVLET_PATH + "/v1/status/*", 
+    //         FilterMapping.REQUEST);
     root.addFilter(fHolder, "/" + SERVLET_PATH + "/v1/version/*", 
              FilterMapping.REQUEST);
 
@@ -252,7 +252,7 @@ public class Main {
   public FilterHolder makeAuthFilter() {
     FilterHolder authFilter = new FilterHolder(AuthFilter.class);
     UserNameHandler.allowAnonymous(authFilter);
-    if (UserGroupInformation.isSecurityEnabled()) {
+    if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
       //http://hadoop.apache.org/docs/r1.1.1/api/org/apache/hadoop/security/authentication/server/AuthenticationFilter.html
       authFilter.setInitParameter("dfs.web.authentication.signature.secret",
         conf.kerberosSecret());

@@ -34,6 +34,12 @@ public final class LdapSearchFactory implements DirSearchFactory {
 
   private static final Logger LOG = LoggerFactory.getLogger(LdapSearchFactory.class);
 
+  private static final String CONNECT_TIME_OUT = "com.sun.jndi.ldap.connect.timeout";
+
+  private static final String READ_TIME_OUT = "com.sun.jndi.ldap.read.timeout";
+
+  private static final String TIME_OUT = "10000";
+
   /**
    * {@inheritDoc}
    */
@@ -44,7 +50,7 @@ public final class LdapSearchFactory implements DirSearchFactory {
       DirContext ctx = createDirContext(conf, principal, password);
       return new LdapSearch(conf, ctx);
     } catch (NamingException e) {
-      LOG.debug("Could not connect to the LDAP Server:Authentication failed for {}", principal);
+      LOG.error("Could not connect to the LDAP Server:Authentication failed for principal:" + principal, e);
       throw new AuthenticationException("Error validating LDAP user", e);
     }
   }
@@ -58,7 +64,9 @@ public final class LdapSearchFactory implements DirSearchFactory {
     env.put(Context.SECURITY_AUTHENTICATION, "simple");
     env.put(Context.SECURITY_CREDENTIALS, password);
     env.put(Context.SECURITY_PRINCIPAL, principal);
-    LOG.debug("Connecting using principal {} to ldap url {}", principal, ldapUrl);
+    env.put(CONNECT_TIME_OUT, TIME_OUT);
+    env.put(READ_TIME_OUT, TIME_OUT);
+    LOG.info("Connecting using principal {} to ldap url {}", principal, ldapUrl);
     return new InitialDirContext(env);
   }
 }

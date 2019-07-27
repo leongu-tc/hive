@@ -107,7 +107,7 @@ final class Security {
     Configuration conf,
     boolean harRequested)
     throws IOException, MetaException, TException, Exception {
-    if (UserGroupInformation.isSecurityEnabled()) {
+    if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
       UserGroupInformation ugi = UserGroupInformation.getCurrentUser();
       // check if oozie has set up a hcat deleg. token - if so use it
       TokenSelector<? extends TokenIdentifier> hiveTokenSelector = new DelegationTokenSelector();

@@ -115,6 +115,21 @@ class TextMetaDataFormatter implements MetaDataFormatter {
     }
       }
 
+  private static String deleteCRLFOnce(String input) {
+    return input.replaceAll("((\r\n)|\n)[\\s\t ]*(\\1)+", "$1");
+  }
+
+  /**
+   * delete CRLF; delete  empty line ;delete blank lines
+   *
+   * @param input
+   * @return
+   */
+  private static String deleteCRLF(String input) {
+    input=deleteCRLFOnce(input);
+    return deleteCRLFOnce(input);
+  }
+
   @Override
   public void describeTable(DataOutputStream outStream,  String colPath,
       String tableName, Table tbl, Partition part, List<FieldSchema> cols,
@@ -132,6 +147,7 @@ class TextMetaDataFormatter implements MetaDataFormatter {
       } else {
         output = MetaDataFormatUtils.getAllColumnsInformation(cols, isFormatted, isOutputPadded, colStats);
       }
+      output = deleteCRLF(output);
       outStream.write(output.getBytes("UTF-8"));
 
       if (tableName.equals(colPath)) {

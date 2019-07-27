@@ -133,7 +133,7 @@ public class TempletonControllerJob extends Configured implements Tool, JobSubmi
 
     JobClient jc = new JobClient(new JobConf(job.getConfiguration()));
 
-    if(UserGroupInformation.isSecurityEnabled()) {
+    if(UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
       Token<DelegationTokenIdentifier> mrdt = jc.getDelegationToken(new Text("mr token"));
       job.getCredentials().addToken(new Text("mr token"), mrdt);
     }

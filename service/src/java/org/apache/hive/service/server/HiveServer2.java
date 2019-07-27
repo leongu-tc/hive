@@ -258,7 +258,7 @@ public class HiveServer2 extends CompositeService {
     @Override
     public List<ACL> getDefaultAcl() {
       List<ACL> nodeAcls = new ArrayList<ACL>();
-      if (UserGroupInformation.isSecurityEnabled()) {
+      if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
         // Read all to the world
         nodeAcls.addAll(Ids.READ_ACL_UNSAFE);
         // Create/Delete/Write/Admin to the authenticated user
@@ -401,7 +401,7 @@ public class HiveServer2 extends CompositeService {
    * @throws Exception
    */
   private void setUpZooKeeperAuth(HiveConf hiveConf) throws Exception {
-    if (UserGroupInformation.isSecurityEnabled()) {
+    if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
       String principal = hiveConf.getVar(ConfVars.HIVE_SERVER2_KERBEROS_PRINCIPAL);
       if (principal.isEmpty()) {
         throw new IOException("HiveServer2 Kerberos principal is empty");

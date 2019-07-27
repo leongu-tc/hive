@@ -82,7 +82,7 @@ public class LlapWebServices extends AbstractService {
     HttpServer.Builder builder =
         new HttpServer.Builder("llap").setPort(this.port).setHost(bindAddress);
     builder.setConf(new HiveConf(conf, HiveConf.class));
-    if (UserGroupInformation.isSecurityEnabled()) {
+    if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
       LOG.info("LLAP UI useSSL=" + this.useSSL + ", auto-auth/SPNEGO="
           + this.useSPNEGO + ", port=" + this.port);
       builder.setUseSSL(this.useSSL);

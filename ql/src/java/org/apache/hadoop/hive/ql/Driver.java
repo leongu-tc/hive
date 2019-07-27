@@ -1685,7 +1685,21 @@ public class Driver implements CommandProcessor {
           ss.getUserIpAddress(), InetAddress.getLocalHost().getHostAddress(), operationId,
           ss.getSessionId(), Thread.currentThread().getName(), ss.isHiveServerQuery(), perfLogger);
       hookContext.setHookType(HookContext.HookType.PRE_EXEC_HOOK);
+      // begin
+      String userName = ss.getUserName();
+      String taskInfo = ss.getConf().get("taskInfo");
+      String projectId = ss.getConf().get("hiveProjectId");
+      String userId = ss.getConf().get("hiveUserId");
+      String []groupArr = hookContext.getUgi().getGroupNames();
+      String groupNames = "";
 
+      for(String name:groupArr){
+        groupNames=groupNames+name+",";
+      }
+      String currentDB = SessionState.get().getCurrentDatabase();
+      String commandTye = hookContext.getOperationName();
+      LOG.info("Metadata collect: "+"\t"+userName+"\t"+groupNames+"\t" + queryStr+"\t"+taskInfo+"\t"+currentDB+"\t"+commandTye+"\t"+projectId+"\t"+userId+"\t"+System.currentTimeMillis());
+      // end
       for (Hook peh : getHooks(HiveConf.ConfVars.PREEXECHOOKS)) {
         if (peh instanceof ExecuteWithHookContext) {
           perfLogger.PerfLogBegin(CLASS_NAME, PerfLogger.PRE_HOOK + peh.getClass().getName());

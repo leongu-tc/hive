@@ -54,7 +54,7 @@ public class SecureProxySupport {
   private String user;
 
   public SecureProxySupport() {
-    isEnabled = UserGroupInformation.isSecurityEnabled();
+    isEnabled = (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP));
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(SecureProxySupport.class);

@@ -144,7 +144,7 @@ public class LlapTaskCommunicator extends TezTaskCommunicatorImpl {
     if (LOG.isInfoEnabled()) {
       LOG.info("Task communicator with a token " + token);
     }
-    Preconditions.checkState((token != null) == UserGroupInformation.isSecurityEnabled());
+    Preconditions.checkState((token != null) == (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)));
 
     // Not closing this at the moment at shutdown, since this could be a shared instance.
     serviceRegistry = LlapRegistryService.getClient(conf);

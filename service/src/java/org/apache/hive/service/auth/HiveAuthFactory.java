@@ -427,7 +427,7 @@ public class HiveAuthFactory {
     HiveConf hiveConf) throws HiveSQLException {
     try {
       UserGroupInformation sessionUgi;
-      if (UserGroupInformation.isSecurityEnabled()) {
+      if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
         KerberosNameShim kerbName = ShimLoader.getHadoopShims().getKerberosNameShim(realUser);
         sessionUgi = UserGroupInformation.createProxyUser(
             kerbName.getServiceName(), UserGroupInformation.getLoginUser());

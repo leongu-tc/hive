@@ -277,7 +277,7 @@ public class MapredLocalTask extends Task<MapredLocalWork> implements Serializab
       }
 
 
-      if(UserGroupInformation.isSecurityEnabled() &&
+      if(UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP) &&
            UserGroupInformation.isLoginKeytabBased()) {
         //If kerberos security is enabled, and HS2 doAs is enabled,
         // then additional params need to be set so that the command is run as

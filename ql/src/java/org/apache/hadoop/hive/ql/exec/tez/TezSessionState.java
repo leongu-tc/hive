@@ -282,7 +282,7 @@ public class TezSessionState {
 
     Credentials llapCredentials = null;
     if (llapMode) {
-      if (UserGroupInformation.isSecurityEnabled()) {
+      if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
         llapCredentials = new Credentials();
         llapCredentials.addToken(LlapTokenIdentifier.KIND_NAME, getLlapToken(user, tezConfig));
       }

@@ -121,8 +121,8 @@ public final class MetaDataFormatUtils {
     formatAllFields(columnInformation, cols, isOutputPadded, null);
 
     if ((partCols != null) && !partCols.isEmpty() && showPartColsSep) {
-      columnInformation.append(LINE_DELIM).append("# Partition Information")
-      .append(LINE_DELIM);
+      columnInformation.append(LINE_DELIM).append("# Partition Information").append(FIELD_DELIM).append(FIELD_DELIM)
+              .append(LINE_DELIM);
       formatColumnsHeader(columnInformation, null);
       formatAllFields(columnInformation, partCols, isOutputPadded, null);
     }

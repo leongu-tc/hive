@@ -27,7 +27,7 @@ use Cwd;
 use IPC::Run qw(run);
 
 our @firstName = ("alice", "bob", "calvin", "david", "ethan", "fred",
-    "gabriella", "holly", "irene", "jessica", "katie", "luke", "mike", "nick",
+    "gabriella", "holly", "irene", "katie", "luke", "mike", "nick",
     "oscar", "priscilla", "quinn", "rachel", "sarah", "tom", "ulysses", "victor",
     "wendy", "xavier", "yuri", "zach");
 

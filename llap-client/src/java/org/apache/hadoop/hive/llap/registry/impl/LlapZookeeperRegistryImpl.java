@@ -195,7 +195,7 @@ public class LlapZookeeperRegistryImpl implements ServiceRegistry {
     this.pathToInstanceCache = new ConcurrentHashMap<>();
     this.nodeToInstanceCache = new ConcurrentHashMap<>();
 
-    final boolean isSecure = UserGroupInformation.isSecurityEnabled();
+    final boolean isSecure = UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP);
     ACLProvider zooKeeperAclProvider = new ACLProvider() {
       @Override
       public List<ACL> getDefaultAcl() {
@@ -892,7 +892,7 @@ public class LlapZookeeperRegistryImpl implements ServiceRegistry {
 
 
   private void setupZookeeperAuth(final Configuration conf) throws IOException {
-    if (UserGroupInformation.isSecurityEnabled() && LlapProxy.isDaemon()) {
+    if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP) && LlapProxy.isDaemon()) {
       LOG.info("UGI security is enabled. Setting up ZK auth.");
 
       String llapPrincipal = HiveConf.getVar(conf, ConfVars.LLAP_KERBEROS_PRINCIPAL);

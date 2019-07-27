@@ -1026,6 +1026,21 @@ struct TGetOperationStatusReq {
   2: optional bool getProgressUpdate
 }
 
+enum TJobExecutionStatus {
+    IN_PROGRESS,
+    COMPLETE,
+    NOT_AVAILABLE
+}
+
+struct TProgressUpdateResp {
+  1: required list<string> headerNames
+  2: required list<list<string>> rows
+  3: required double progressedPercentage
+  4: required TJobExecutionStatus status
+  5: required string footerSummary
+  6: required i64 startTime
+}
+
 struct TGetOperationStatusResp {
   1: required TStatus status
   2: optional TOperationState operationState
@@ -1209,20 +1224,9 @@ struct TRenewDelegationTokenResp {
   1: required TStatus status
 }
 
-enum TJobExecutionStatus {
-    IN_PROGRESS,
-    COMPLETE,
-    NOT_AVAILABLE
-}
 
-struct TProgressUpdateResp {
-  1: required list<string> headerNames
-  2: required list<list<string>> rows
-  3: required double progressedPercentage
-  4: required TJobExecutionStatus status
-  5: required string footerSummary
-  6: required i64 startTime
-}
+
+
 
 service TCLIService {
 

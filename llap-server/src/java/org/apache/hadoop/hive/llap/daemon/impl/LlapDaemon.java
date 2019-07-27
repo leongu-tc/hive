@@ -146,7 +146,7 @@ public class LlapDaemon extends CompositeService implements ContainerRunner, Lla
     String hostName = MetricsUtils.getHostName();
     try {
       // re-login with kerberos. This makes sure all daemons have the same login user.
-      if (UserGroupInformation.isSecurityEnabled()) {
+      if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
         final String daemonPrincipal = HiveConf.getVar(daemonConf, ConfVars.LLAP_KERBEROS_PRINCIPAL);
         final String daemonKeytab = HiveConf.getVar(daemonConf, ConfVars.LLAP_KERBEROS_KEYTAB_FILE);
         LlapUtil.loginWithKerberosAndUpdateCurrentUser(daemonPrincipal, daemonKeytab);
@@ -265,7 +265,7 @@ public class LlapDaemon extends CompositeService implements ContainerRunner, Lla
         new QueryFailedHandlerProxy(), daemonConf, daemonId, socketFactory);
 
     SecretManager sm = null;
-    if (UserGroupInformation.isSecurityEnabled()) {
+    if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
       sm = SecretManager.createSecretManager(daemonConf, daemonId.getClusterString());
     }
     this.secretManager = sm;

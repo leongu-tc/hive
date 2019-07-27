@@ -775,7 +775,12 @@ public class Exec extends HplsqlBaseVisitor<Integer> {
     // specify the default log4j2 properties file.
     System.setProperty("log4j.configurationFile", "hive-log4j2.properties");
     conf = new Conf();
-    conf.init();    
+    conf.init();
+    // use the command line parameters to cover the config file's
+    for (Map.Entry<String, String> v : arguments.getVars().entrySet()) {
+      conf.set(v.getKey(),v.getValue());
+    }
+
     conn = new Conn(this);
     meta = new Meta(this);
     initOptions();

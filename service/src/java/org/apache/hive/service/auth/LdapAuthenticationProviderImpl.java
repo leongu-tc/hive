@@ -23,6 +23,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hive.service.ServiceUtils;
@@ -67,24 +69,31 @@ public class LdapAuthenticationProviderImpl implements PasswdAuthenticationProvi
 
   @Override
   public void Authenticate(String user, String password) throws AuthenticationException {
+
+    if (StringUtils.isBlank(user)) {
+      throw new AuthenticationException("Error validating LDAP user:"
+              + " a null or blank user name has been provided");
+    }
+    if (StringUtils.isBlank(password) || password.getBytes()[0] == 0) {
+      throw new AuthenticationException("Error validating LDAP user:"
+              + " a null or blank password has been provided");
+    }
+
     DirSearch search = null;
     try {
-      search = createDirSearch(user, password);
+      try {
+        search = createDirSearch(user, DigestUtils.md5Hex(password));
+      }catch (AuthenticationException e){
+        ServiceUtils.cleanup(LOG, search);
+        search = createDirSearch(user, password);
+      }
       applyFilter(search, user);
-    } finally {
+    }finally {
       ServiceUtils.cleanup(LOG, search);
     }
   }
 
   private DirSearch createDirSearch(String user, String password) throws AuthenticationException {
-    if (StringUtils.isBlank(user)) {
-      throw new AuthenticationException("Error validating LDAP user:"
-          + " a null or blank user name has been provided");
-    }
-    if (StringUtils.isBlank(password) || password.getBytes()[0] == 0) {
-      throw new AuthenticationException("Error validating LDAP user:"
-          + " a null or blank password has been provided");
-    }
     List<String> principals = LdapUtils.createCandidatePrincipals(conf, user);
     for (Iterator<String> iterator = principals.iterator(); iterator.hasNext();) {
       String principal = iterator.next();

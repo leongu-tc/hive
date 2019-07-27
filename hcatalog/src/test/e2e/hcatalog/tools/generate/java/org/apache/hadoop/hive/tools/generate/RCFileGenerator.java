@@ -51,7 +51,7 @@ public class RCFileGenerator {
   }
 
   private static String[] firstName = {"alice", "bob", "calvin", "david",
-    "ethan", "fred", "gabriella", "holly", "irene", "jessica", "katie",
+    "ethan", "fred", "gabriella", "holly", "irene", "katie",
     "luke", "mike", "nick", "oscar", "priscilla", "quinn", "rachel",
     "sarah", "tom", "ulysses", "victor", "wendy", "xavier", "yuri",
     "zach"};

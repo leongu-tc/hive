@@ -197,7 +197,7 @@ public class SMBMapJoinOperator extends AbstractMapJoinOperator<SMBJoinDesc> imp
       FetchWork fetchWork = entry.getValue();
 
       JobConf jobClone = new JobConf(hconf);
-      if (UserGroupInformation.isSecurityEnabled()) {
+      if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
         String hadoopAuthToken = System.getenv(UserGroupInformation.HADOOP_TOKEN_FILE_LOCATION);
         if(hadoopAuthToken != null){
           jobClone.set("mapreduce.job.credentials.binary", hadoopAuthToken);

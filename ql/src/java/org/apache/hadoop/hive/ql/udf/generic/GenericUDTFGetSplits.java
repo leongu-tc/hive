@@ -349,7 +349,7 @@ public class GenericUDTFGetSplits extends GenericUDTF {
       String queryUser = null;
       byte[] tokenBytes = null;
       LlapSigner signer = null;
-      if (UserGroupInformation.isSecurityEnabled()) {
+      if (UserGroupInformation.isSecurityEnabled() && !UserGroupInformation.isAuthenticationEnabled(UserGroupInformation.AuthenticationMethod.SDP)) {
         signer = coordinator.getLlapSigner(job);
  
         // 1. Generate the token for query user (applies to all splits).
